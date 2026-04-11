@@ -3,7 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Satria Elektronik Custom Styles */
+/* TokoKu Custom Styles */
 :root {
   --bg-primary: #0a0a0f;
   --bg-secondary: #12121a;
@@ -529,6 +529,23 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Safe Area Support for Mobile (iOS Notch, Dynamic Island) */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.mt-safe {
+  margin-top: env(safe-area-inset-top);
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.mb-safe {
+  margin-bottom: env(safe-area-inset-bottom);
 }
 
 /* Mobile Responsive */

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Package, Menu, X, ShoppingBag, User, LogOut, LayoutDashboard, FileText, Trash2, Minus, Plus, Wrench } from 'lucide-react';
+import { Package, ShoppingBag, User, LogOut, FileText, Trash2, Minus, Plus, Wrench } from 'lucide-react';
 import { User as UserType, UserWithoutPassword } from '@/types/index';
 import { formatCurrency } from '@/lib/utils';
 import ServiceCallModal from '@/components/ServiceCallModal';
@@ -28,7 +28,6 @@ interface CartItem {
 }
 
 export default function Header({ currentUser }: HeaderProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -189,15 +188,15 @@ export default function Header({ currentUser }: HeaderProps) {
       <header className="fixed top-0 left-0 right-0 z-50 h-16 md:h-20 glass" id="navbar">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo */}
+            {/* Logo - Vertical Layout */}
             <a
               href="/"
-              className="flex items-center gap-3 group"
+              className="flex flex-col items-center gap-1 group"
             >
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
-                <Package className="w-10 h-10 text-white" />
+                <Package className="w-6 h-6 text-white" />
               </div>
-              <span className="font-display font-bold text-lg sm:text-x5 text-white">Satria Elektronik</span>
+              <span className="font-display font-bold text-sm sm:text-base text-white">SE</span>
             </a>
 
             {/* Navigation (Desktop) */}
@@ -240,164 +239,90 @@ export default function Header({ currentUser }: HeaderProps) {
             </nav>
 
             {/* Right Actions */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-4 sm:gap-6">
               {/* Service Call Button */}
               <button
                 onClick={() => setShowServiceCallModal(true)}
-                className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-x2 bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300 group"
+                className="flex flex-col items-center gap-1 min-w-[50px] sm:min-w-[60px] group"
                 aria-label="Service Panggilan"
-                title="Service Panggilan"
               >
-                <Wrench className="w-5 h-5 text-white" />
-                <span className="hidden sm:block text-sm font-medium text-white group-hover:text-white/90 transition-colors">
-                  Service Panggilan
+                <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300">
+                  <Wrench className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-[10px] sm:text-xs font-medium text-white/80 group-hover:text-white transition-colors">
+                  Service panggilan
                 </span>
               </button>
 
               {/* Cart Button */}
               <button
                 onClick={() => setCartOpen(!cartOpen)}
-                className="relative flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-x2 bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300 group"
+                className="flex flex-col items-center gap-1 min-w-[50px] sm:min-w-[60px] group relative"
                 aria-label="Keranjang Belanja"
-                title="Keranjang Belanja"
               >
-                <ShoppingBag className="w-5 h-5 text-white" />
-                <span className="hidden sm:block text-sm font-medium text-white group-hover:text-white/90 transition-colors">
+                <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300 relative">
+                  <ShoppingBag className="w-5 h-5 text-white" />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full text-[10px] sm:text-xs flex items-center justify-center font-bold text-white shadow-lg">
+                      {cartCount}
+                    </span>
+                  )}
+                </div>
+                <span className="text-[10px] sm:text-xs font-medium text-white/80 group-hover:text-white transition-colors">
                   Keranjang
                 </span>
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full text-xs sm:text-sm flex items-center justify-center font-bold text-white shadow-lg">
-                    {cartCount}
-                  </span>
-                )}
               </button>
 
               {/* User Menu */}
               {currentUser ? (
-                <div className="flex items-center gap-2">
-                  <span className="hidden sm:block text-sm text-white/80 max-w-[120px] truncate">
-                    {currentUser.nama}
-                  </span>
-                  {currentUser.role === 'admin' && (
-                    <a
-                      href="/admin"
-                      className="p-2 rounded-xl hover:bg-white/5 transition-colors"
-                      title="Admin Dashboard"
-                    >
-                      <LayoutDashboard className="w-5 h-5" />
-                    </a>
-                  )}
-                  <a
-                    href="/orders"
-                    className="p-2 rounded-xl hover:bg-white/5 transition-colors hidden sm:block relative"
-                    title="Pesanan"
-                  >
-                    <FileText className="w-5 h-5" />
-                    {pendingOrderCount > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-1 py-0.5 rounded-full min-w-[18px] h-4 flex items-center justify-center">
-                        {pendingOrderCount}
-                      </span>
-                    )}
-                  </a>
-                  <button
-                    onClick={handleLogout}
-                    className="p-2 rounded-xl hover:bg-red-500/20 transition-colors text-red-500"
-                    title="Logout"
-                  >
-                    <LogOut className="w-5 h-5" />
-                  </button>
-                </div>
-              ) : (
-                <a
-                  href="/login"
-                  className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-x2 bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300 group"
-                  aria-label="Login"
-                  title="Registrasi/Login"
-                >
-                  <User className="w-5 h-5 text-white" />
-                  <span className="hidden sm:block text-sm font-medium text-white group-hover:text-white/90 transition-colors">
-                    Registrasi/Login
-                  </span>
-                </a>
-              )}
-
-              {/* Mobile Menu Toggle */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 rounded-xl hover:bg-white/5"
-                aria-label="Menu"
-              >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-white/5">
-            <div className="px-4 py-4 space-y-2">
-              <a
-                href="/"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block w-full text-left px-4 py-3 rounded-x2 hover:bg-white/5"
-              >
-                Beranda
-              </a>
-              <a
-                href="/products"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block w-full text-left px-4 py-3 rounded-x2 hover:bg-white/5"
-              >
-                Produk
-              </a>
-              {currentUser ? (
                 <>
-                  <div className="relative">
+                  {/* User Info */}
+                  <div className="flex flex-col items-center gap-1 min-w-[50px] sm:min-w-[60px]">
                     <a
                       href="/orders"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block w-full text-left px-4 py-3 rounded-x2 hover:bg-white/5 pr-8"
+                      className="flex flex-col items-center gap-1 group"
                     >
-                      Pesanan Saya
-                    </a>
-                    {pendingOrderCount > 0 && (
-                      <span className="absolute top-1/2 -translate-y-1/2 right-4 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] h-5 flex items-center justify-center">
-                        {pendingOrderCount}
+                      <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300">
+                        <User className="w-5 h-5 text-white" />
+                      </div>
+                      <span className="text-[10px] sm:text-xs font-medium text-white/80 group-hover:text-white transition-colors">
+                        {currentUser.nama.split(' ')[0]}
                       </span>
-                    )}
-                  </div>
-                  {currentUser.role === 'admin' && (
-                    <a
-                      href="/admin"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block w-full text-left px-4 py-3 rounded-x2 hover:bg-white/5"
-                    >
-                      Admin Dashboard
                     </a>
-                  )}
+                  </div>
+
+                  {/* Logout Button */}
                   <button
-                    onClick={() => {
-                      handleLogout();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="block w-full text-left px-4 py-3 rounded-xl hover:bg-red-500/20 text-red-500"
+                    onClick={handleLogout}
+                    className="flex flex-col items-center gap-1 min-w-[50px] sm:min-w-[60px] group"
+                    aria-label="Logout"
                   >
-                    Logout
+                    <div className="p-2 rounded-xl bg-red-500/10 backdrop-blur-sm border border-red-500/20 hover:bg-red-500/20 hover:border-red-500/30 transition-all duration-300">
+                      <LogOut className="w-5 h-5 text-red-400" />
+                    </div>
+                    <span className="text-[10px] sm:text-xs font-medium text-red-400/80 group-hover:text-red-400 transition-colors">
+                      Logout
+                    </span>
                   </button>
                 </>
               ) : (
                 <a
                   href="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full text-left px-4 py-3 rounded-xl hover:bg-white/5"
+                  className="flex flex-col items-center gap-1 min-w-[50px] sm:min-w-[60px] group"
+                  aria-label="Login"
                 >
-                  Login / Daftar
+                  <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300">
+                    <User className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-[10px] sm:text-xs font-medium text-white/80 group-hover:text-white transition-colors">
+                    Login/daftar
+                  </span>
                 </a>
               )}
             </div>
           </div>
-        )}
+        </div>
+
       </header>
 
       {/* Spacer for fixed header */}

@@ -63,16 +63,16 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md relative z-10">
+    <div className="min-h-screen flex items-start justify-center px-4 pt-24 pb-12 safe-area-top">
+      <div className="w-full max-w-md relative z-10 mt-safe">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-linear-to-br from-indigo-500 to-purple-600 mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 mb-4">
             <User className="w-8 h-8 text-white" />
           </div>
           <h1 className="font-display font-bold text-3xl mb-2">Selamat Datang Kembali</h1>
-          <p className="text-(--text-secondary)">
-            Masuk ke akun Satria Elektronik Anda
+          <p className="text-[var(--text-secondary)]">
+            Masuk ke akun TokoKu Anda
           </p>
         </div>
 
@@ -91,7 +91,7 @@ export default function LoginPage() {
                 No. WhatsApp
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-(--text-muted) pointer-events-none transition-opacity duration-200" style={{ opacity: formData.noWhatsapp ? '0' : '1' }} />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)] pointer-events-none transition-opacity duration-200" style={{ opacity: formData.noWhatsapp ? '0' : '1' }} />
                 <input
                   id="noWhatsapp"
                   type="tel"
@@ -110,7 +110,7 @@ export default function LoginPage() {
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-(--text-muted) pointer-events-none transition-opacity duration-200" style={{ opacity: formData.password ? '0' : '1' }} />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)] pointer-events-none transition-opacity duration-200" style={{ opacity: formData.password ? '0' : '1' }} />
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
@@ -123,7 +123,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-(--text-muted) hover:text-(--text-primary) transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -153,10 +153,10 @@ export default function LoginPage() {
           {/* Divider */}
           <div className="relative my-8">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-(--border-color)" />
+              <div className="w-full border-t border-[var(--border-color)]" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-(--bg-card) text-(--text-muted)">
+              <span className="px-4 bg-[var(--bg-card)] text-[var(--text-muted)]">
                 atau
               </span>
             </div>
@@ -164,11 +164,11 @@ export default function LoginPage() {
 
           {/* Register Link */}
           <div className="text-center">
-            <p className="text-(--text-secondary)">
+            <p className="text-[var(--text-secondary)]">
               Belum punya akun?{' '}
               <Link
                 href="/register"
-                className="text-(--accent-primary) font-semibold hover:underline"
+                className="text-[var(--accent-primary)] font-semibold hover:underline"
               >
                 Daftar sekarang
               </Link>
@@ -180,7 +180,7 @@ export default function LoginPage() {
         <div className="text-center mt-6">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm text-(--text-secondary) hover:text-(--text-primary) transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           >
             <ArrowRight className="w-4 h-4 rotate-180" />
             Kembali ke Beranda

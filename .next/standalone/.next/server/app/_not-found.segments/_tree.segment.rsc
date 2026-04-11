@@ -1,3 +1,0 @@
-:HL["/_next/static/chunks/0hjpox053mn5j.css","style"]
-:HL["/_next/static/chunks/14.ag-70py2dl.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"2s7IotgHpgrSXm0mmAElJ"}

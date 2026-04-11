@@ -96,21 +96,37 @@ export function getPublicUrl(path: string): string {
 
 /**
  * Convert WhatsApp number to email format for Supabase Auth
- * Example: "628123456789" -> "user628123456789@Satria Elektronik.app"
+ * Example: "628123456789" -> "user628123456789@tokoku.app"
  */
 export function whatsappToEmail(noWhatsapp: string): string {
-  // Clean the phone number (remove +, spaces, dashes)
-  const cleaned = noWhatsapp.replace(/[\+\s\-]/g, '');
-  return `user${cleaned}@Satria Elektronik.app`;
+  // Clean the phone number - remove ALL non-digit characters
+  // This removes: +, -, space, (, ), etc.
+  const cleaned = noWhatsapp.replace(/[^\d]/g, '');
+
+  // Validate that we have a reasonable phone number
+  // Should be at least 10 digits (country code + number)
+  if (!cleaned || cleaned.length < 10) {
+    // If invalid, return a fallback email
+    return `user-invalid@tokoku.app`;
+  }
+
+  // Ensure it starts with country code (62 for Indonesia)
+  // If user inputs "08123456789", convert to "628123456789"
+  let normalizedNumber = cleaned;
+  if (cleaned.startsWith('0')) {
+    normalizedNumber = '62' + cleaned.slice(1);
+  }
+
+  return `user${normalizedNumber}@tokoku.app`;
 }
 
 /**
  * Convert email back to WhatsApp number
- * Example: "user628123456789@Satria Elektronik.app" -> "628123456789"
+ * Example: "user628123456789@tokoku.app" -> "628123456789"
  */
 export function emailToWhatsapp(email: string): string {
-  // Remove "user" prefix and "@Satria Elektronik.app" suffix
-  return email.replace(/^user/, '').replace(/@Satria Elektronik\.app$/, '');
+  // Remove "user" prefix and "@tokoku.app" suffix
+  return email.replace(/^user/, '').replace(/@tokoku\.app$/, '');
 }
 
 /**

@@ -131,15 +131,29 @@ export default function ProductsPage() {
           {/* Filters */}
           <div className="mb-8 flex flex-col md:flex-row gap-4">
             {/* Search */}
-            <div className="flex-1 relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
+            <div className="flex-1 flex gap-2">
               <input
                 type="text"
                 placeholder="Cari produk..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="input-field pl-12"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                  }
+                }}
+                className="input-field flex-1"
               />
+              <button
+                onClick={() => {
+                  // Search query sudah otomatis berubah lewat state
+                  // Tambahkan sedikit feedback visual
+                  console.log('Searching for:', searchQuery);
+                }}
+                className="btn-primary px-6 py-3 whitespace-nowrap"
+              >
+                Cari
+              </button>
             </div>
 
             {/* Category Filter */}

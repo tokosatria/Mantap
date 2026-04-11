@@ -51,8 +51,8 @@ export default function BottomNavigation({ cartCount = 0, pendingOrderCount = 0,
     {
       name: 'Profil',
       icon: User,
-      path: currentUser ? '/orders' : '/login',
-      active: pathname === '/orders',
+      path: currentUser ? '/profile' : '/login',
+      active: pathname === '/profile',
     },
   ];
 

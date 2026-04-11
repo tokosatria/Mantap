@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, MapPin, Wrench } from 'lucide-react';
 
 interface ServiceCallModalProps {
@@ -18,6 +18,26 @@ export default function ServiceCallModal({ isOpen, onClose }: ServiceCallModalPr
     notes: '',
   });
   const [loading, setLoading] = useState(false);
+
+  // Handle browser back button
+  useEffect(() => {
+    if (isOpen) {
+      // Push a new history entry when modal opens
+      window.history.pushState({ modal: true }, '');
+
+      const handlePopState = (event: PopStateEvent) => {
+        if (event.state?.modal) {
+          onClose();
+        }
+      };
+
+      window.addEventListener('popstate', handlePopState);
+
+      return () => {
+        window.removeEventListener('popstate', handlePopState);
+      };
+    }
+  }, [isOpen, onClose]);
 
   // Fungsi untuk mengkonversi nomor WhatsApp
   const formatWhatsAppNumber = (value: string) => {
@@ -60,7 +80,12 @@ export default function ServiceCallModal({ isOpen, onClose }: ServiceCallModalPr
           preferredDate: '',
           notes: '',
         });
-        onClose();
+        // Go back in history to remove the modal state
+        if (window.history.state?.modal) {
+          window.history.back();
+        } else {
+          onClose();
+        }
       } else {
         alert('❌ ' + (data.error || 'Gagal mengirim permintaan'));
       }
@@ -98,7 +123,12 @@ export default function ServiceCallModal({ isOpen, onClose }: ServiceCallModalPr
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onClose();
+                // Go back in history to remove the modal state
+                if (window.history.state?.modal) {
+                  window.history.back();
+                } else {
+                  onClose();
+                }
               }}
               className="p-2 rounded-lg hover:bg-white/5 text-[var(--text-secondary)] hover:text-white transition-colors"
             >
@@ -211,7 +241,14 @@ export default function ServiceCallModal({ isOpen, onClose }: ServiceCallModalPr
             <div className="flex gap-3 pt-4">
               <button
                 type="button"
-                onClick={onClose}
+                onClick={() => {
+                  // Go back in history to remove the modal state
+                  if (window.history.state?.modal) {
+                    window.history.back();
+                  } else {
+                    onClose();
+                  }
+                }}
                 className="btn-secondary flex-1"
                 disabled={loading}
               >

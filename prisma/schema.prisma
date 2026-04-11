@@ -1,0 +1,176 @@
+// Satria Elektronik E-Commerce Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id          String        @id @default(cuid())
+  nama        String
+  noKtp       String        @unique
+  noWhatsapp  String        @unique
+  alamat      String
+  password    String
+  role        String        @default("agen") // admin, agen
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  orders          Order[]
+  serviceOrders   ServiceOrder[]
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String
+  icon      String
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id          String     @id @default(cuid())
+  name        String
+  description String
+  basePrice   Int
+  imageUrl    String
+  categoryId  String
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  category    Category    @relation(fields: [categoryId], references: [id])
+  variants    Variant[]
+}
+
+model Variant {
+  id          String                    @id @default(cuid())
+  productId   String
+  variantName String
+  price       Int
+  hpp         Int                       @default(0)  // Harga Pokok Penjualan (disembunyikan dari publik)
+  stock       Int                       @default(0)
+  sku         String                    @unique
+  isActive    Boolean                   @default(true)
+  createdAt   DateTime                  @default(now())
+  updatedAt   DateTime                  @updatedAt
+
+  product     Product                   @relation(fields: [productId], references: [id])
+  orderItems  OrderItem[]
+  cartItems   CartItem[]
+  serviceOrderSpareparts ServiceOrderSparepart[]
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  userId        String
+  orderNumber   String      @unique
+  status        String      @default("pending") // pending, confirmed, paid, completed, cancelled
+  totalAmount   Int
+  source        String      @default("store") // store (penjualan biasa), service (sparepart dari service)
+  serviceOrderId String?    // Referensi ke service order jika dari service
+  notes         String?
+  cancelReason  String?
+  createdAt     DateTime    @default(now())
+  completedAt   DateTime?
+  updatedAt     DateTime    @updatedAt
+
+  user          User        @relation(fields: [userId], references: [id])
+  items         OrderItem[]
+}
+
+model OrderItem {
+  id           String    @id @default(cuid())
+  orderId      String
+  variantId    String
+  quantity     Int
+  price        Int
+  status       String    @default("pending") // pending, confirmed, paid, completed, cancelled
+  cancelReason String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  order        Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variant      Variant   @relation(fields: [variantId], references: [id])
+}
+
+model Service {
+  id          String          @id @default(cuid())
+  name        String
+  category    String
+  description String
+  price       Int
+  duration    String
+  status      String          @default("active") // active, inactive
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  serviceOrders ServiceOrder[]
+}
+
+model ServiceOrder {
+  id               String                   @id @default(cuid())
+  userId           String?
+  serviceId        String?
+  orderNumber      String                   @unique
+  customerName     String
+  customerPhone    String
+  customerAddress  String
+  itemDescription  String                   // Deskripsi barang yang diservis
+  problemDescription String                 // Keluhan/masalah barang
+  serviceType      String                   @default("toko") // toko (service datang ke toko), panggilan (home service)
+  preferredDate    String?                  // Waktu yang diinginkan untuk kunjungan (untuk service panggilan)
+
+  // Payment and pricing
+  estimatedPrice   Int                      @default(0)  // Estimasi harga dari katalog service
+  dpAmount         Int                      @default(0)  // Uang muka / DP yang dibayar
+  finalPrice       Int                      @default(0)  // Harga final saat pekerjaan selesai (biaya jasa service saja)
+  remainingAmount  Int                      @default(0)  // Sisa pembayaran (finalPrice - dpAmount)
+  sparepartsTotal  Int                      @default(0)  // Total harga spareparts yang digunakan
+
+  // Status tracking
+  status           String                   @default("pending") // pending, in_progress, dp_paid, completed, cancelled
+  paymentStatus    String                   @default("unpaid")  // unpaid, partial, paid
+
+  // Notes and dates
+  notes            String?
+  cancelReason     String?
+  createdAt        DateTime                 @default(now())
+  completedAt      DateTime?
+  updatedAt        DateTime                 @updatedAt
+
+  user             User?                    @relation(fields: [userId], references: [id])
+  service          Service?                 @relation(fields: [serviceId], references: [id])
+  spareparts       ServiceOrderSparepart[]
+}
+
+model ServiceOrderSparepart {
+  id             String       @id @default(cuid())
+  serviceOrderId String
+  variantId      String
+  quantity       Int          @default(1)
+  price          Int          // Harga jual per unit
+  cost           Int          // Biaya modal per unit (untuk profit analysis)
+  createdAt      DateTime     @default(now())
+
+  serviceOrder   ServiceOrder @relation(fields: [serviceOrderId], references: [id], onDelete: Cascade)
+  variant        Variant      @relation(fields: [variantId], references: [id])
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  userId    String
+  variantId String
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  variant   Variant  @relation(fields: [variantId], references: [id])
+
+  @@unique([userId, variantId])
+}

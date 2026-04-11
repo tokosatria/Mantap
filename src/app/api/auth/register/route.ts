@@ -54,9 +54,6 @@ export async function POST(request: NextRequest) {
     const isAdmin = adminNumbers.includes(noWhatsapp);
     const role = isAdmin ? 'admin' : 'agen';
 
-    console.log(`Register check: noWhatsapp=${noWhatsapp}, isAdmin=${isAdmin}, role=${role}`);
-    console.log(`Admin numbers:`, adminNumbers);
-
     // Create Supabase client (no storage for auth)
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -85,9 +82,8 @@ export async function POST(request: NextRequest) {
     });
 
     if (authError) {
-      console.error('Supabase Auth error:', authError);
       return NextResponse.json(
-        { success: false, message: `Gagal register di Supabase Auth: ${authError.message}` },
+        { success: false, message: 'Gagal register. No. WhatsApp atau data tidak valid' },
         { status: 400 }
       );
     }
@@ -155,7 +151,6 @@ export async function POST(request: NextRequest) {
 
     return response;
   } catch (error) {
-    console.error('Register error:', error);
     return NextResponse.json(
       { success: false, message: 'Terjadi kesalahan server' },
       { status: 500 }

@@ -107,7 +107,6 @@ export default function ProductsPage() {
 
   const handleAddToCart = (variantId: string, quantity: number) => {
     // Cart update logic will be handled by the modal
-    console.log('Added to cart:', { variantId, quantity });
   };
 
   return (
@@ -147,8 +146,7 @@ export default function ProductsPage() {
               <button
                 onClick={() => {
                   // Search query sudah otomatis berubah lewat state
-                  // Tambahkan sedikit feedback visual
-                  console.log('Searching for:', searchQuery);
+                  // Data akan terfilter otomatis
                 }}
                 className="btn-primary px-6 py-3 whitespace-nowrap"
               >

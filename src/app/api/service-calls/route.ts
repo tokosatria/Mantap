@@ -58,7 +58,6 @@ export async function POST(request: NextRequest) {
       message: 'Permintaan Service Panggilan berhasil dikirim. Kami akan segera menghubungi Anda.',
     }, { status: 201 });
   } catch (error) {
-    console.error('Create service call error:', error);
     return NextResponse.json<ApiResponse>({
       success: false,
       error: 'Terjadi kesalahan saat mengirim permintaan Service Panggilan',

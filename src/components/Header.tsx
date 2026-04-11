@@ -209,7 +209,7 @@ export default function Header({ currentUser }: HeaderProps) {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 h-16 md:h-20 glass" id="navbar">
+      <header className="fixed top-0 left-0 right-0 z-50 h-16 md:h-20 bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg" id="navbar">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo - Vertical Layout */}
@@ -217,7 +217,7 @@ export default function Header({ currentUser }: HeaderProps) {
               href="/"
               className="flex flex-col items-center gap-1 group"
             >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
+              <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
                 <Package className="w-6 h-6 text-white" />
               </div>
               <span className="font-display font-bold text-sm sm:text-base text-white">SE</span>
@@ -270,10 +270,10 @@ export default function Header({ currentUser }: HeaderProps) {
                 className="flex flex-col items-center gap-1 min-w-[50px] sm:min-w-[60px] group"
                 aria-label="Service Panggilan"
               >
-                <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300">
+                <div className="p-2 rounded-xl bg-white/20 backdrop-blur-sm border-2 border-white/30 hover:bg-white/30 hover:border-white/40 transition-all duration-300">
                   <Wrench className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-[11px] sm:text-sm font-medium text-white/80 group-hover:text-white transition-colors">
+                <span className="text-[11px] sm:text-sm font-medium text-white/90 group-hover:text-white transition-colors">
                   Service panggilan
                 </span>
               </button>
@@ -284,15 +284,15 @@ export default function Header({ currentUser }: HeaderProps) {
                 className="flex flex-col items-center gap-1 min-w-[50px] sm:min-w-[60px] group relative"
                 aria-label="Keranjang Belanja"
               >
-                <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300 relative">
+                <div className="p-2 rounded-xl bg-white/20 backdrop-blur-sm border-2 border-white/30 hover:bg-white/30 hover:border-white/40 transition-all duration-300 relative">
                   <ShoppingBag className="w-5 h-5 text-white" />
                   {cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full text-[10px] sm:text-xs flex items-center justify-center font-bold text-white shadow-lg">
+                    <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-white text-blue-600 rounded-full text-[10px] sm:text-xs flex items-center justify-center font-bold shadow-lg">
                       {cartCount}
                     </span>
                   )}
                 </div>
-                <span className="text-[11px] sm:text-sm font-medium text-white/80 group-hover:text-white transition-colors">
+                <span className="text-[11px] sm:text-sm font-medium text-white/90 group-hover:text-white transition-colors">
                   Keranjang
                 </span>
               </button>
@@ -306,10 +306,10 @@ export default function Header({ currentUser }: HeaderProps) {
                       href="/orders"
                       className="flex flex-col items-center gap-1 group"
                     >
-                      <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300">
+                      <div className="p-2 rounded-xl bg-white/20 backdrop-blur-sm border-2 border-white/30 hover:bg-white/30 hover:border-white/40 transition-all duration-300">
                         <User className="w-5 h-5 text-white" />
                       </div>
-                      <span className="text-[11px] sm:text-sm font-medium text-white/80 group-hover:text-white transition-colors">
+                      <span className="text-[11px] sm:text-sm font-medium text-white/90 group-hover:text-white transition-colors">
                         {currentUser.nama.split(' ')[0]}
                       </span>
                     </a>
@@ -321,10 +321,10 @@ export default function Header({ currentUser }: HeaderProps) {
                     className="flex flex-col items-center gap-1 min-w-[50px] sm:min-w-[60px] group"
                     aria-label="Logout"
                   >
-                    <div className="p-2 rounded-xl bg-red-500/10 backdrop-blur-sm border border-red-500/20 hover:bg-red-500/20 hover:border-red-500/30 transition-all duration-300">
-                      <LogOut className="w-5 h-5 text-red-400" />
+                    <div className="p-2 rounded-xl bg-white/20 backdrop-blur-sm border-2 border-white/30 hover:bg-red-500/40 hover:border-red-400/50 transition-all duration-300">
+                      <LogOut className="w-5 h-5 text-white" />
                     </div>
-                    <span className="text-[11px] sm:text-sm font-medium text-red-400/80 group-hover:text-red-400 transition-colors">
+                    <span className="text-[11px] sm:text-sm font-medium text-white/90 group-hover:text-white transition-colors">
                       Logout
                     </span>
                   </button>
@@ -335,10 +335,10 @@ export default function Header({ currentUser }: HeaderProps) {
                   className="flex flex-col items-center gap-1 min-w-[50px] sm:min-w-[60px] group"
                   aria-label="Login"
                 >
-                  <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300">
+                  <div className="p-2 rounded-xl bg-white/20 backdrop-blur-sm border-2 border-white/30 hover:bg-white/30 hover:border-white/40 transition-all duration-300">
                     <User className="w-5 h-5 text-white" />
                   </div>
-                  <span className="text-[11px] sm:text-sm font-medium text-white/80 group-hover:text-white transition-colors">
+                  <span className="text-[11px] sm:text-sm font-medium text-white/90 group-hover:text-white transition-colors">
                     Login/daftar
                   </span>
                 </a>

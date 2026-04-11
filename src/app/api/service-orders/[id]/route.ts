@@ -108,9 +108,6 @@ export async function PATCH(
       spareparts,
     } = body;
 
-    // Debug logging
-    console.log('Service Order PATCH Request:', { id, action, status, body });
-
     // Check if service order exists
     const existingOrder = await db.serviceOrder.findUnique({
       where: { id },
@@ -360,7 +357,6 @@ export async function PATCH(
       });
     }
 
-    console.log('Invalid action received:', action);
     return NextResponse.json<ApiResponse>({
       success: false,
       error: 'Action tidak valid',

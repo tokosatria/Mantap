@@ -80,17 +80,13 @@ export default function ServiceCallModal({ isOpen, onClose }: ServiceCallModalPr
           preferredDate: '',
           notes: '',
         });
-        // Go back in history to remove the modal state
-        if (window.history.state?.modal) {
-          window.history.back();
-        } else {
-          onClose();
-        }
+        // Close modal and redirect to home
+        onClose();
+        window.location.href = '/';
       } else {
         alert('❌ ' + (data.error || 'Gagal mengirim permintaan'));
       }
     } catch (error) {
-      console.error('Submit error:', error);
       alert('❌ Terjadi kesalahan saat mengirim permintaan');
     } finally {
       setLoading(false);
@@ -123,12 +119,7 @@ export default function ServiceCallModal({ isOpen, onClose }: ServiceCallModalPr
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                // Go back in history to remove the modal state
-                if (window.history.state?.modal) {
-                  window.history.back();
-                } else {
-                  onClose();
-                }
+                onClose();
               }}
               className="p-2 rounded-lg hover:bg-white/5 text-[var(--text-secondary)] hover:text-white transition-colors"
             >
@@ -241,14 +232,7 @@ export default function ServiceCallModal({ isOpen, onClose }: ServiceCallModalPr
             <div className="flex gap-3 pt-4">
               <button
                 type="button"
-                onClick={() => {
-                  // Go back in history to remove the modal state
-                  if (window.history.state?.modal) {
-                    window.history.back();
-                  } else {
-                    onClose();
-                  }
-                }}
+                onClick={onClose}
                 className="btn-secondary flex-1"
                 disabled={loading}
               >

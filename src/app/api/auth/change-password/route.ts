@@ -62,9 +62,8 @@ export async function POST(request: NextRequest) {
     });
 
     if (updateError) {
-      console.error('Supabase update password error:', updateError);
       return NextResponse.json(
-        { success: false, message: `Gagal mengubah password: ${updateError.message}` },
+        { success: false, message: 'Gagal mengubah password' },
         { status: 400 }
       );
     }
@@ -75,7 +74,6 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Change password error:', error);
     return NextResponse.json(
       { success: false, message: 'Terjadi kesalahan server' },
       { status: 500 }

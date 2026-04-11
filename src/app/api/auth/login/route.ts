@@ -39,7 +39,6 @@ export async function POST(request: NextRequest) {
     });
 
     if (authError) {
-      console.error('Supabase Auth error:', authError);
       return NextResponse.json(
         { success: false, message: 'No. WhatsApp atau password salah' },
         { status: 401 }
@@ -114,7 +113,6 @@ export async function POST(request: NextRequest) {
 
     return response;
   } catch (error) {
-    console.error('Login error:', error);
     return NextResponse.json(
       { success: false, message: 'Terjadi kesalahan server' },
       { status: 500 }

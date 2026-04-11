@@ -104,8 +104,7 @@ export default function HomePage() {
   };
 
   const handleAddToCart = (variantId: string, quantity: number) => {
-    // Cart update will be handled
-    console.log('Added to cart:', { variantId, quantity });
+    // Cart update will be handled by the modal
     // Show toast notification here
   };
 

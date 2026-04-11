@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Package, ShoppingBag, User, LogOut, FileText, Trash2, Minus, Plus, Wrench } from 'lucide-react';
+import { Package, ShoppingBag, User, LogOut, FileText, Trash2, Minus, Plus, Wrench, X } from 'lucide-react';
 import { User as UserType, UserWithoutPassword } from '@/types/index';
 import { formatCurrency } from '@/lib/utils';
 import ServiceCallModal from '@/components/ServiceCallModal';

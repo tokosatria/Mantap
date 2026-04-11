@@ -249,7 +249,7 @@ export default function Header({ currentUser }: HeaderProps) {
                 <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300">
                   <Wrench className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-[10px] sm:text-xs font-medium text-white/80 group-hover:text-white transition-colors">
+                <span className="text-[11px] sm:text-sm font-medium text-white/80 group-hover:text-white transition-colors">
                   Service panggilan
                 </span>
               </button>
@@ -268,7 +268,7 @@ export default function Header({ currentUser }: HeaderProps) {
                     </span>
                   )}
                 </div>
-                <span className="text-[10px] sm:text-xs font-medium text-white/80 group-hover:text-white transition-colors">
+                <span className="text-[11px] sm:text-sm font-medium text-white/80 group-hover:text-white transition-colors">
                   Keranjang
                 </span>
               </button>
@@ -285,7 +285,7 @@ export default function Header({ currentUser }: HeaderProps) {
                       <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300">
                         <User className="w-5 h-5 text-white" />
                       </div>
-                      <span className="text-[10px] sm:text-xs font-medium text-white/80 group-hover:text-white transition-colors">
+                      <span className="text-[11px] sm:text-sm font-medium text-white/80 group-hover:text-white transition-colors">
                         {currentUser.nama.split(' ')[0]}
                       </span>
                     </a>
@@ -300,7 +300,7 @@ export default function Header({ currentUser }: HeaderProps) {
                     <div className="p-2 rounded-xl bg-red-500/10 backdrop-blur-sm border border-red-500/20 hover:bg-red-500/20 hover:border-red-500/30 transition-all duration-300">
                       <LogOut className="w-5 h-5 text-red-400" />
                     </div>
-                    <span className="text-[10px] sm:text-xs font-medium text-red-400/80 group-hover:text-red-400 transition-colors">
+                    <span className="text-[11px] sm:text-sm font-medium text-red-400/80 group-hover:text-red-400 transition-colors">
                       Logout
                     </span>
                   </button>
@@ -314,7 +314,7 @@ export default function Header({ currentUser }: HeaderProps) {
                   <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all duration-300">
                     <User className="w-5 h-5 text-white" />
                   </div>
-                  <span className="text-[10px] sm:text-xs font-medium text-white/80 group-hover:text-white transition-colors">
+                  <span className="text-[11px] sm:text-sm font-medium text-white/80 group-hover:text-white transition-colors">
                     Login/daftar
                   </span>
                 </a>

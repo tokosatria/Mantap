@@ -76,11 +76,11 @@ export default function ServiceCallModal({ isOpen, onClose }: ServiceCallModalPr
 
   return (
     <div
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 overflow-y-auto"
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-start justify-center p-4 pt-24 overflow-y-auto safe-area-top"
       onClick={onClose}
     >
       <div
-        className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl max-w-lg w-full my-4 flex flex-col shadow-2xl"
+        className="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl max-w-lg w-full my-4 mt-safe flex flex-col shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -134,7 +134,7 @@ export default function ServiceCallModal({ isOpen, onClose }: ServiceCallModalPr
               <input
                 type="tel"
                 required
-                placeholder="Contoh: 6281234567890"
+                placeholder="Contoh: 081234567890"
                 value={formData.customerPhone}
                 onChange={handleWhatsAppChange}
                 className="input-field"

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { X, MapPin, Wrench } from 'lucide-react';
 
 interface ServiceCallModalProps {
@@ -18,26 +18,6 @@ export default function ServiceCallModal({ isOpen, onClose }: ServiceCallModalPr
     notes: '',
   });
   const [loading, setLoading] = useState(false);
-
-  // Handle browser back button
-  useEffect(() => {
-    if (isOpen) {
-      // Push a new history entry when modal opens
-      window.history.pushState({ modal: true }, '');
-
-      const handlePopState = (event: PopStateEvent) => {
-        if (event.state?.modal) {
-          onClose();
-        }
-      };
-
-      window.addEventListener('popstate', handlePopState);
-
-      return () => {
-        window.removeEventListener('popstate', handlePopState);
-      };
-    }
-  }, [isOpen, onClose]);
 
   // Fungsi untuk mengkonversi nomor WhatsApp
   const formatWhatsAppNumber = (value: string) => {

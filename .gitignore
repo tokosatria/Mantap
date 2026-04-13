@@ -1,30 +1,157 @@
-# Environment & Config
+# =================================================================
+# CRITICAL SECURITY - SENSITIVE FILES
+# =================================================================
+
+# Environment Variables - NEVER COMMIT THESE!
 .env
-.env.local
-.env.*.local
-config.js
-config.local.js
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
 
-# Dependencies
+# Database Files - NEVER COMMIT USER DATA!
+*.db
+*.sqlite
+*.sqlite3
+prisma/*.db
+db/*.db
+database/*.db
+
+# Supabase/Auth Config
+supabase/.temp/supabase-admin*.key
+.supabase
+
+# =================================================================
+# DEPENDENCIES
+# =================================================================
 node_modules/
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
-# IDE
-.vscode/
-.idea/
+# Mini services dependencies
+mini-services/*/node_modules/
 
-# OS files
-.DS_Store
-Thumbs.db
+# =================================================================
+# NEXT.JS BUILD & CACHE
+# =================================================================
+.next/
+out/
+build/
+.next-cache/
+.turbo/
+.swc/
 
-# Logs
+# =================================================================
+# TESTING & COVERAGE
+# =================================================================
+/coverage
+.nyc_output
+*.lcov
+test-results/
+
+# =================================================================
+# LOGS
+# =================================================================
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+lerna-debug.log*
+server.log
+dev.log
+dev.out.log
 
-# Build dist
-dist/
-build/
+# =================================================================
+# IDE & EDITOR CONFIG
+# =================================================================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
 
-# Temporary files
+# =================================================================
+# TEMPORARY FILES
+# =================================================================
 *.tmp
 *.temp
 .cache/
+tmp/
+temp/
+*.pid
+*.seed
+*.pid.lock
+
+# =================================================================
+# OS GENERATED FILES
+# =================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# =================================================================
+# MISC & CONFIG
+# =================================================================
+*.pem
+.vercel
+.now
+.claude
+.z-ai-config
+local-*
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# =================================================================
+# PROJECT SPECIFIC
+# =================================================================
+# Skills directory
+/skills/
+
+# Test directories
+test/
+prompt/
+
+# Agent context (contains work logs)
+/agent-ctx/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# =================================================================
+# OPTIONAL - Uncomment if needed
+# =================================================================
+# If using Firebase
+# firebase-debug.log*
+# firestore-debug.log*
+# ui-debug.log*
+
+# If using AWS
+# .aws-sam/
+
+# If using Docker (uncomment if you want to ignore docker-compose.override.yml)
+# docker-compose.override.yml
+
+# If you want to ignore all local overrides
+# *.local

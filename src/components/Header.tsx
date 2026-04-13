@@ -141,10 +141,6 @@ export default function Header({ currentUser }: HeaderProps) {
       alert('Keranjang kosong');
       return;
     }
-    // Go back in history to remove the drawer state before navigating
-    if (window.history.state?.cartDrawer) {
-      window.history.back();
-    }
     router.push('/checkout');
     setCartOpen(false);
   };
@@ -186,26 +182,6 @@ export default function Header({ currentUser }: HeaderProps) {
       fetchCartItems();
     }
   }, [cartOpen, currentUser]);
-
-  // Handle browser back button for cart drawer
-  useEffect(() => {
-    if (cartOpen) {
-      // Push a new history entry when cart drawer opens
-      window.history.pushState({ cartDrawer: true }, '');
-
-      const handlePopState = (event: PopStateEvent) => {
-        if (event.state?.cartDrawer) {
-          setCartOpen(false);
-        }
-      };
-
-      window.addEventListener('popstate', handlePopState);
-
-      return () => {
-        window.removeEventListener('popstate', handlePopState);
-      };
-    }
-  }, [cartOpen]);
 
   return (
     <>
@@ -355,27 +331,13 @@ export default function Header({ currentUser }: HeaderProps) {
       {/* Cart Drawer */}
       <div
         className={`cart-overlay ${cartOpen ? 'open' : ''}`}
-        onClick={() => {
-          // Go back in history to remove the drawer state
-          if (window.history.state?.cartDrawer) {
-            window.history.back();
-          } else {
-            setCartOpen(false);
-          }
-        }}
+        onClick={() => setCartOpen(false)}
       />
       <aside className={`cart-drawer ${cartOpen ? 'open' : ''}`}>
         <div className="flex items-center justify-between p-6 border-b border-white/5">
           <h2 className="font-display font-bold text-xl">Keranjang Belanja</h2>
           <button
-            onClick={() => {
-              // Go back in history to remove the drawer state
-              if (window.history.state?.cartDrawer) {
-                window.history.back();
-              } else {
-                setCartOpen(false);
-              }
-            }}
+            onClick={() => setCartOpen(false)}
             className="p-2 rounded-lg hover:bg-white/5 transition-colors"
           >
             <X className="w-5 h-5" />

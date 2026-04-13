@@ -35,7 +35,7 @@ export default function ProductModal({
     const newQuantity = quantity + delta;
     if (
       newQuantity >= 1 &&
-      (!selectedVariant || newQuantity <= selectedVariant.stock)
+      (!selectedVariant || newQuantity <= selectedVariant.stok)
     ) {
       setQuantity(newQuantity);
     }
@@ -120,22 +120,22 @@ export default function ProductModal({
 
             {/* Product Details */}
             <div className="p-6 md:p-8">
-              <span className="text-xs text-(--accent-primary) font-medium uppercase tracking-wide">
+              <span className="text-xs text-[var(--accent-primary)] font-medium uppercase tracking-wide">
                 {product.category?.nama}
               </span>
               <h2 className="font-display font-bold text-2xl mt-2 mb-3">
                 {product.nama}
               </h2>
-              <p className="text-(--text-secondary) text-sm mb-6">
+              <p className="text-[var(--text-secondary)] text-sm mb-6">
                 {product.deskripsi}
               </p>
 
               {/* Price */}
               <div className="mb-6">
-                <p className="text-(--text-muted) text-sm mb-1">Harga</p>
+                <p className="text-[var(--text-muted)] text-sm mb-1">Harga</p>
                 {showPriceRange ? (
                   <div>
-                    <span className="text-(--text-muted) text-xs">Mulai dari </span>
+                    <span className="text-[var(--text-muted)] text-xs">Mulai dari </span>
                     <span className="price-main text-xl">{formatCurrency(priceRange.min)}</span>
                   </div>
                 ) : (
@@ -146,7 +146,7 @@ export default function ProductModal({
               {/* Variants */}
               {variants.length > 0 && (
                 <div className="mb-6">
-                  <p className="text-(--text-muted) text-sm mb-3">Pilih Varian</p>
+                  <p className="text-[var(--text-muted)] text-sm mb-3">Pilih Varian</p>
                   <div className="space-y-2 max-h-48 overflow-y-auto">
                     {variants.map((variant) => (
                       <button
@@ -162,7 +162,7 @@ export default function ProductModal({
                         </div>
                         <div className="text-right">
                           <p className="font-semibold">{formatCurrency(variant.harga)}</p>
-                          <p className="text-xs text-(--text-muted)">
+                          <p className="text-xs text-[var(--text-muted)]">
                             {variant.stok > 0 ? `Stok: ${variant.stok}` : 'Habis'}
                           </p>
                         </div>
@@ -175,7 +175,7 @@ export default function ProductModal({
               {/* Quantity */}
               {selectedVariant && (
                 <div className="mb-6">
-                  <p className="text-(--text-muted) text-sm mb-3">Jumlah</p>
+                  <p className="text-[var(--text-muted)] text-sm mb-3">Jumlah</p>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                       <button
@@ -194,7 +194,7 @@ export default function ProductModal({
                         <Plus className="w-4 h-4" />
                       </button>
                     </div>
-                    <span className="text-sm text-(--text-muted)">
+                    <span className="text-sm text-[var(--text-muted)]">
                       Total: {formatCurrency(currentPrice * quantity)}
                     </span>
                   </div>

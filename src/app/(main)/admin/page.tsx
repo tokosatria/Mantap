@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { UserWithoutPassword, Order, Product, Category, Service, Variant } from '@/types';
 import {
   Users,
@@ -41,6 +42,7 @@ type Stats = {
 };
 
 export default function AdminPage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [currentUser, setCurrentUser] = useState<UserWithoutPassword | null>(null);
   const [stats, setStats] = useState<Stats>({
@@ -59,12 +61,14 @@ export default function AdminPage() {
       if (data.success) {
         setCurrentUser(data.data);
         if (data.data.role !== 'admin') {
-          window.location.href = '/';
+          // Use router.push to preserve history - back button will work correctly
+          router.push('/');
         }
       }
     } catch (error) {
       console.error('Auth error:', error);
-      window.location.href = '/';
+      // Use router.push to preserve history - back button will work correctly
+      router.push('/');
     }
   }, []);
 
@@ -356,6 +360,51 @@ function OrdersTab({ onRefresh }: { onRefresh: () => void }) {
     fetchOrders();
     fetchProducts();
   }, []);
+
+  // Handle back button for order detail modal
+  useEffect(() => {
+    if (selectedOrder) {
+      window.history.pushState({ modalOpen: true, modalType: 'orderDetail' }, '');
+
+      const handlePopState = (event: PopStateEvent) => {
+        if (event.state?.modalOpen && event.state?.modalType === 'orderDetail') {
+          setSelectedOrder(null);
+          setIsEditing(false);
+        }
+      };
+
+      window.addEventListener('popstate', handlePopState);
+
+      return () => {
+        window.removeEventListener('popstate', handlePopState);
+        if (window.history.state?.modalOpen && window.history.state?.modalType === 'orderDetail') {
+          window.history.back();
+        }
+      };
+    }
+  }, [selectedOrder]);
+
+  // Handle back button for add item modal
+  useEffect(() => {
+    if (showAddItemModal) {
+      window.history.pushState({ modalOpen: true, modalType: 'addItem' }, '');
+
+      const handlePopState = (event: PopStateEvent) => {
+        if (event.state?.modalOpen && event.state?.modalType === 'addItem') {
+          setShowAddItemModal(false);
+        }
+      };
+
+      window.addEventListener('popstate', handlePopState);
+
+      return () => {
+        window.removeEventListener('popstate', handlePopState);
+        if (window.history.state?.modalOpen && window.history.state?.modalType === 'addItem') {
+          window.history.back();
+        }
+      };
+    }
+  }, [showAddItemModal]);
 
   // Keyboard event listener for Esc key
   useEffect(() => {
@@ -951,6 +1000,28 @@ function UsersTab() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Handle back button for add user modal
+  useEffect(() => {
+    if (showAddUserModal) {
+      window.history.pushState({ modalOpen: true, modalType: 'addUser' }, '');
+
+      const handlePopState = (event: PopStateEvent) => {
+        if (event.state?.modalOpen && event.state?.modalType === 'addUser') {
+          setShowAddUserModal(false);
+        }
+      };
+
+      window.addEventListener('popstate', handlePopState);
+
+      return () => {
+        window.removeEventListener('popstate', handlePopState);
+        if (window.history.state?.modalOpen && window.history.state?.modalType === 'addUser') {
+          window.history.back();
+        }
+      };
+    }
+  }, [showAddUserModal]);
 
   const fetchData = async () => {
     try {

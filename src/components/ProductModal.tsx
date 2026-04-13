@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { X, ShoppingBag, Minus, Plus, Package } from 'lucide-react';
 import { Product, Variant } from '@/types/index';
 import { formatCurrency } from '@/lib/utils';
@@ -18,9 +19,37 @@ export default function ProductModal({
   product,
   onAddToCart,
 }: ProductModalProps) {
+  const router = useRouter();
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [adding, setAdding] = useState(false);
+
+  // Handle back button to close modal
+  useEffect(() => {
+    if (isOpen) {
+      // Add a history entry when modal opens
+      window.history.pushState({ modalOpen: true }, '');
+
+      // Handle back button press
+      const handlePopState = (event: PopStateEvent) => {
+        if (event.state?.modalOpen) {
+          // Close modal when back button is pressed
+          onClose();
+        }
+      };
+
+      window.addEventListener('popstate', handlePopState);
+
+      // Cleanup
+      return () => {
+        window.removeEventListener('popstate', handlePopState);
+        // Remove the extra history entry when modal closes normally (via X button)
+        if (window.history.state?.modalOpen) {
+          window.history.back();
+        }
+      };
+    }
+  }, [isOpen, onClose]);
 
   if (!isOpen || !product) return null;
 
@@ -50,7 +79,9 @@ export default function ProductModal({
       const authRes = await fetch('/api/auth/me');
       if (!authRes.ok || authRes.status === 401) {
         // User belum login, redirect ke halaman register
-        window.location.href = '/register';
+        // Use router.push to preserve history - back button will work correctly
+        onClose();
+        router.push('/register');
         return;
       }
 

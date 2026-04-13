@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { User, Lock, MapPin, Phone, IdCard, Save, Eye, EyeOff } from 'lucide-react';
 
 export default function ProfilePage() {
+  const router = useRouter();
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -46,11 +48,13 @@ export default function ProfilePage() {
           alamat: data.data.alamat || '',
         });
       } else {
-        window.location.href = '/login';
+        // Use router.push to preserve history - back button will work correctly
+        router.push('/login');
       }
     } catch (error) {
       console.error('Fetch user error:', error);
-      window.location.href = '/login';
+      // Use router.push to preserve history - back button will work correctly
+      router.push('/login');
     } finally {
       setLoading(false);
     }

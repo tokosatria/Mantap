@@ -36,6 +36,33 @@ export default function Header({ currentUser }: HeaderProps) {
   const [showServiceCallModal, setShowServiceCallModal] = useState(false);
   const router = useRouter();
 
+  // Handle back button to close cart drawer
+  useEffect(() => {
+    if (cartOpen) {
+      // Add a history entry when cart drawer opens
+      window.history.pushState({ drawerOpen: true, drawerType: 'cart' }, '');
+
+      // Handle back button press
+      const handlePopState = (event: PopStateEvent) => {
+        if (event.state?.drawerOpen && event.state?.drawerType === 'cart') {
+          // Close cart drawer when back button is pressed
+          setCartOpen(false);
+        }
+      };
+
+      window.addEventListener('popstate', handlePopState);
+
+      // Cleanup
+      return () => {
+        window.removeEventListener('popstate', handlePopState);
+        // Remove the extra history entry when drawer closes normally (via X button or checkout)
+        if (window.history.state?.drawerOpen && window.history.state?.drawerType === 'cart') {
+          window.history.back();
+        }
+      };
+    }
+  }, [cartOpen]);
+
   const fetchCartCount = async () => {
     if (!currentUser) return;
     try {

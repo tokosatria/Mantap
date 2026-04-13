@@ -95,7 +95,11 @@ export default function AdminPage() {
       const pendingServiceOrders = serviceOrders.filter((o: any) => o.status === 'pending').length;
       const serviceRevenue = serviceOrders
         .filter((o: any) => o.status === 'completed')
-        .reduce((sum: number, o: any) => sum + (o.finalPrice || 0), 0);
+        .reduce((sum: number, o: any) => {
+          const serviceFee = o.finalPrice || 0;
+          const sparepartsTotal = o.sparepartsTotal || o.spareparts?.reduce((total: number, sp: any) => total + (sp.price * sp.quantity), 0) || 0;
+          return sum + serviceFee + sparepartsTotal;
+        }, 0);
 
       // Calculate low stock variants
       const lowStockCount = products.reduce((sum: number, product: Product) => {

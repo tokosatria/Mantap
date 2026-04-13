@@ -5,6 +5,7 @@ import ProductCard from '@/components/ProductCard';
 import ProductModal from '@/components/ProductModal';
 import BottomNavigation from '@/components/BottomNavigation';
 import SkeletonCard from '@/components/SkeletonCard';
+import PWAInstallPrompt from '@/components/PWAInstallPrompt';
 import { Product, Category } from '@/types/index';
 import { Package } from 'lucide-react';
 
@@ -206,6 +207,9 @@ export default function HomePage() {
         pendingOrderCount={pendingOrderCount}
         currentUser={currentUser}
       />
+
+      {/* PWA Install Prompt */}
+      <PWAInstallPrompt />
 
       {/* Product Modal */}
       <ProductModal

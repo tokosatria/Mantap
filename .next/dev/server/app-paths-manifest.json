@@ -1,0 +1,13 @@
+{
+  "/api/auth/me/route": "app/api/auth/me/route.js",
+  "/api/products/route": "app/api/products/route.js",
+  "/api/orders/route": "app/api/orders/route.js",
+  "/api/cart/route": "app/api/cart/route.js",
+  "/api/service-orders/route": "app/api/service-orders/route.js",
+  "/api/services/route": "app/api/services/route.js",
+  "/api/auth/logout/route": "app/api/auth/logout/route.js",
+  "/api/categories/route": "app/api/categories/route.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(main)/page": "app/(main)/page.js",
+  "/(main)/admin/page": "app/(main)/admin/page.js"
+}

@@ -1,0 +1,10 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#3FA2D6"></rect>
+  
+  <circle cx="256" cy="200" r="80" stroke="white" stroke-width="20" fill="none"></circle>
+  <line x1="256" y1="110" x2="256" y2="200" stroke="white" stroke-width="20"></line>
+
+  <text x="50%" y="400" text-anchor="middle" fill="white" font-size="70" font-family="Arial" font-weight="bold">
+    SATRIA
+  </text>
+</svg>

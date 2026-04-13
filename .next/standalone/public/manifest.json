@@ -1,0 +1,77 @@
+{
+  "name": "Satria Elektronik",
+  "short_name": "SE",
+  "description": "Toko Elektronik Terpercaya dengan Layanan Service Panggilan",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0891b2",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon-192x192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512x512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-192x192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-maskable-512x512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["shopping", "electronics"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Lihat Produk",
+      "short_name": "Produk",
+      "description": "Lihat katalog produk elektronik",
+      "url": "/products",
+      "icons": [
+        {
+          "src": "/icon-192x192.svg",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Keranjang",
+      "short_name": "Keranjang",
+      "description": "Lihat keranjang belanja",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/icon-192x192.svg",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Service Panggilan",
+      "short_name": "Service",
+      "description": "Request service panggilan ke lokasi Anda",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/icon-192x192.svg",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+globalThis.__RSC_MANIFEST=(globalThis.__RSC_MANIFEST||{});globalThis.__RSC_MANIFEST["/api/generate-pwa-icons/route"]={"moduleLoading":{"prefix":"/_next/"},"ssrModuleMapping":{},"edgeSSRModuleMapping":{},"clientModules":{},"entryCSSFiles":{"D:\\tokoku-ecommerce\\src\\app\\api\\generate-pwa-icons\\route":[]},"rscModuleMapping":{},"edgeRscModuleMapping":{}};

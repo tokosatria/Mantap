@@ -33,8 +33,17 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Analytics tracking error:', error);
+    
+    // Check if error is about missing table
+    if (error?.code === 'P2021' || error?.message?.includes('does not exist')) {
+      return NextResponse.json(
+        { success: false, error: 'Analytics table does not exist. Please run database migration.' },
+        { status: 500 }
+      );
+    }
+    
     return NextResponse.json(
       { success: false, error: 'Failed to track analytics' },
       { status: 500 }
@@ -92,7 +101,7 @@ export async function GET(request: NextRequest) {
 
     // Page visits breakdown
     const pageVisits = analyticsData.reduce((acc: any, curr) => {
-      acc[curr.pagePath] = (acc[curr.pagePath] || 0) + 1;
+      acc[curr.pagePath] = (acc[curr.pagePath] || 0) +1;
       return acc;
     }, {});
 
@@ -117,8 +126,17 @@ export async function GET(request: NextRequest) {
         recentVisits: analyticsData.slice(0, 50),
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Get analytics error:', error);
+    
+    // Check if error is about missing table
+    if (error?.code === 'P2021' || error?.message?.includes('does not exist')) {
+      return NextResponse.json(
+        { success: false, error: 'Analytics table does not exist. Please run database migration.' },
+        { status: 500 }
+      );
+    }
+    
     return NextResponse.json(
       { success: false, error: 'Failed to get analytics' },
       { status: 500 }

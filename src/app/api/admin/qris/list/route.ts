@@ -13,6 +13,19 @@ export async function GET() {
       );
     }
 
+    // Check if user is admin
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { role: true }
+    });
+
+    if (!user || user.role !== 'admin') {
+      return NextResponse.json(
+        { success: false, error: 'Forbidden: Admin access only' },
+        { status: 403 }
+      );
+    }
+
     // Get all QRIS images
     const qrisImages = await db.qrisImage.findMany({
       orderBy: {
@@ -24,8 +37,16 @@ export async function GET() {
       success: true,
       data: qrisImages,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('List QRIS error:', error);
+    
+    if (error?.code === 'P2021' || error?.message?.includes('does not exist')) {
+      return NextResponse.json(
+        { success: false, error: 'QrisImage table does not exist. Please run database migration.' },
+        { status: 500 }
+      );
+    }
+    
     return NextResponse.json(
       { success: false, error: 'Failed to list QRIS images' },
       { status: 500 }

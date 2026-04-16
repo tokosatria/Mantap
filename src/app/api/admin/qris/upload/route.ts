@@ -15,6 +15,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Import db for role check
+    const { db } = await import('@/lib/db');
+
+    // Check if user is admin
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { role: true }
+    });
+
+    if (!user || user.role !== 'admin') {
+      console.error('[Upload QRIS] Forbidden: Non-admin user attempted to upload');
+      return NextResponse.json(
+        { success: false, error: 'Forbidden: Admin access only' },
+        { status: 403 }
+      );
+    }
+
+    console.log('[Upload QRIS] Admin user verified:', userId);
+
     // Parse form data
     const formData = await request.formData();
     const file = formData.get('file') as File;
@@ -64,6 +83,8 @@ export async function POST(request: NextRequest) {
     const fileName = `qris-${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
     const filePath = `${userId}/${fileName}`;
 
+    console.log('[Upload QRIS] Generated file path:', filePath);
+
     // Upload to Supabase Storage
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from(QRIS_BUCKET)
@@ -87,9 +108,6 @@ export async function POST(request: NextRequest) {
       .from(QRIS_BUCKET)
       .getPublicUrl(filePath)
       .data.publicUrl;
-
-    // Save to database
-    const { db } = await import('@/lib/db');
 
     // Deactivate all existing QRIS images
     console.log('[Upload QRIS] Deactivating all existing QRIS...');

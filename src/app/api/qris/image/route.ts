@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Fetch the image from Supabase
+    // Fetch image from Supabase
     const imageResponse = await fetch(activeQris.imageUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0',
@@ -47,8 +47,20 @@ export async function GET(request: NextRequest) {
         'Access-Control-Allow-Origin': '*',
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('[QRIS Image Proxy] Error:', error);
+    
+    // Check if error is about missing table
+    if (error?.code === 'P2021' || error?.message?.includes('does not exist')) {
+      return NextResponse.json(
+        { 
+          error: 'QrisImage table does not exist', 
+          details: 'Please run database migration to create the table' 
+        },
+        { status: 500 }
+      );
+    }
+    
     return NextResponse.json(
       {
         error: 'Internal server error',

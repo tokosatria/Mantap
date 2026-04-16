@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCurrentUserId } from '@/lib/supabase';
+import { createSupabaseClientForApi, getCurrentUserId } from '@/lib/supabase';
 import { db } from '@/lib/db';
 
 export async function POST(request: NextRequest) {
@@ -10,6 +10,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
+      );
+    }
+
+    // Check if user is admin
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { role: true }
+    });
+
+    if (!user || user.role !== 'admin') {
+      return NextResponse.json(
+        { success: false, error: 'Forbidden: Admin access only' },
+        { status: 403 }
       );
     }
 
@@ -29,20 +42,16 @@ export async function POST(request: NextRequest) {
     });
 
     // Activate the selected QRIS
-    await db.qrisImage.update({
-      where: {
-        id: qrisId,
-      },
-      data: {
-        isActive: true,
-      },
+    const activatedQris = await db.qrisImage.update({
+      where: { id: qrisId },
+      data: { isActive: true },
     });
 
     return NextResponse.json({
       success: true,
-      message: 'QRIS activated successfully',
+      data: activatedQris,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Activate QRIS error:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to activate QRIS' },

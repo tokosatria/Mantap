@@ -25,14 +25,16 @@ import {
   Image as ImageIcon,
   Printer,
   BarChart,
+  QrCode,
 } from 'lucide-react';
 import { formatDate, formatCurrency } from '@/lib/utils';
 import ReportsTab from './ReportsTab';
 import PrintReceipt from '@/components/PrintReceipt';
 import PrintServiceReceipt from '@/components/PrintServiceReceipt';
 import AnalyticsTab from './AnalyticsTab';
+import QrisTab from './QrisTab';
 
-type TabType = 'overview' | 'products' | 'orders' | 'users' | 'services' | 'reports' | 'analytics';
+type TabType = 'overview' | 'products' | 'orders' | 'users' | 'services' | 'reports' | 'analytics' | 'qris';
 
 type Stats = {
   totalRevenue: number;
@@ -180,6 +182,7 @@ export default function AdminPage() {
               { id: 'users', label: 'Users', icon: Users, count: null },
               { id: 'reports', label: 'Laporan', icon: FileText, count: null },
               { id: 'analytics', label: 'Analytics', icon: BarChart, count: null },
+              { id: 'qris', label: 'QRIS', icon: QrCode, count: null },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -211,6 +214,7 @@ export default function AdminPage() {
           {activeTab === 'users' && <UsersTab />}
           {activeTab === 'reports' && <ReportsTab />}
           {activeTab === 'analytics' && <AnalyticsTab />}
+          {activeTab === 'qris' && <QrisTab />}
         </div>
       </main>
     </>

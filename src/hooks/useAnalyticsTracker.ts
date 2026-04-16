@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 
 export function useAnalyticsTracker() {
@@ -7,6 +9,9 @@ export function useAnalyticsTracker() {
     if (!sessionId) {
       sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
       localStorage.setItem('analytics_session_id', sessionId);
+      console.log('Analytics: New session created', sessionId);
+    } else {
+      console.log('Analytics: Using existing session', sessionId);
     }
 
     // Detect device type
@@ -20,7 +25,14 @@ export function useAnalyticsTracker() {
     // Track page view
     const trackPageView = async () => {
       try {
-        await fetch('/api/analytics/track', {
+        console.log('Analytics: Tracking page view', {
+          sessionId,
+          pagePath: window.location.pathname,
+          pageTitle: document.title,
+          deviceType: getDeviceType(),
+        });
+
+        const response = await fetch('/api/analytics/track', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -33,8 +45,15 @@ export function useAnalyticsTracker() {
             referrer: document.referrer || null,
           }),
         });
+
+        if (!response.ok) {
+          const error = await response.json();
+          console.error('Analytics: Track failed', error);
+        } else {
+          console.log('Analytics: Track successful');
+        }
       } catch (error) {
-        console.error('Analytics tracking failed:', error);
+        console.error('Analytics: Tracking failed', error);
       }
     };
 

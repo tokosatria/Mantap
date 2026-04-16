@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { formatDate, formatCurrency } from '@/lib/utils';
 
 interface PrintServiceReceiptProps {
@@ -18,12 +18,40 @@ const STORE_INFO = {
 
 export default function PrintServiceReceipt({ serviceOrder, onClose }: PrintServiceReceiptProps) {
   const printRef = useRef<HTMLDivElement>(null);
+  const [qrisUrl, setQrisUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [imageError, setImageError] = useState(false);
+
+  useEffect(() => {
+    const fetchActiveQris = async () => {
+      try {
+        const res = await fetch('/api/qris/active');
+        const data = await res.json();
+
+        if (data.success && data.data) {
+          const proxyUrl = `/api/qris/image`;
+          setQrisUrl(proxyUrl);
+        }
+      } catch (error) {
+        console.error('[PrintServiceReceipt] Fetch QRIS error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchActiveQris();
+  }, []);
 
   const handlePrint = () => {
     if (printRef.current) {
       const printContent = printRef.current.innerHTML;
+      const baseUrl = window.location.origin;
       const printWindow = window.open('', '', 'width=300,height=600');
       if (printWindow) {
+        const contentWithAbsoluteUrls = printContent
+          .replace(/src="\/api\//g, `src="${baseUrl}/api/`)
+          .replace(/src="\/public\//g, `src="${baseUrl}/public/`);
+
         printWindow.document.write(`
           <!DOCTYPE html>
           <html>
@@ -144,27 +172,52 @@ export default function PrintServiceReceipt({ serviceOrder, onClose }: PrintServ
                 object-fit: contain;
                 margin: 0 auto;
               }
+              .qris-error {
+                color: red;
+                font-size: 9px;
+              }
               .validity {
                 font-size: 10px;
               }
             </style>
           </head>
           <body>
-            ${printContent}
+            ${contentWithAbsoluteUrls}
           </body>
           </html>
         `);
         printWindow.document.close();
-        printWindow.print();
-        printWindow.close();
+
+        // Wait for images to load before printing
+        const images = printWindow.document.querySelectorAll('img');
+        const imageLoadPromises = Array.from(images).map(img => {
+          if (img.complete) {
+            return Promise.resolve();
+          }
+          return new Promise((resolve) => {
+            img.onload = resolve;
+            img.onerror = resolve; // Continue printing even if image fails
+          });
+        });
+
+        Promise.all(imageLoadPromises).then(() => {
+          setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+          }, 500);
+        });
       }
     }
   };
 
   useEffect(() => {
-    handlePrint();
-    onClose();
-  }, []);
+    if (!loading) {
+      setTimeout(() => {
+        handlePrint();
+        onClose();
+      }, 300);
+    }
+  }, [loading]);
 
   const totalBill = (serviceOrder.finalPrice || 0) + (serviceOrder.sparepartsTotal || 0);
   const remainingPayment = totalBill - (serviceOrder.dpAmount || 0);
@@ -288,17 +341,38 @@ export default function PrintServiceReceipt({ serviceOrder, onClose }: PrintServ
 
         {/* Footer */}
         <div className="footer">
-          <div className="qris-section">
-            <div className="qris-label">SCAN QRIS UNTUK PEMBAYARAN</div>
-            <img
-              src="/qris-dana.jpeg"
-              alt="QRIS Dana"
-              className="qris-image"
-            />
-            <div className="validity" style={{ marginTop: '5px' }}>
-              Scan QRIS di atas untuk pembayaran via Dana
+          {loading ? (
+            <div className="qris-section">
+              <div className="qris-error">Loading QRIS...</div>
             </div>
-          </div>
+          ) : imageError ? (
+            <div className="qris-section">
+              <div className="qris-error">Gagal memuat QRIS</div>
+              <div style={{ fontSize: '8px', marginTop: '3px', color: '#999' }}>
+                Error: Gambar QRIS tidak dapat dimuat
+              </div>
+            </div>
+          ) : qrisUrl ? (
+            <div className="qris-section">
+              <div className="qris-label">SCAN QRIS UNTUK PEMBAYARAN</div>
+              <img
+                src={qrisUrl}
+                alt="QRIS"
+                className="qris-image"
+                onError={(e) => {
+                  console.error('[PrintServiceReceipt] Image error:', e);
+                  setImageError(true);
+                }}
+              />
+              <div className="validity" style={{ marginTop: '5px' }}>
+                Scan QRIS di atas untuk pembayaran
+              </div>
+            </div>
+          ) : (
+            <div className="qris-section">
+              <div className="qris-error">Belum ada QRIS yang aktif</div>
+            </div>
+          )}
           <div className="thank-you">Terima Kasih</div>
           <div className="validity">Struk ini sebagai bukti pembayaran yang sah</div>
         </div>

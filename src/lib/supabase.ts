@@ -81,10 +81,13 @@ export async function getCurrentUserId(): Promise<string | null> {
 // Bucket name for product images
 export const PRODUCT_IMAGES_BUCKET = 'product-images';
 
+// Bucket name for QRIS images
+export const QRIS_BUCKET = 'qris-images';
+
 // Helper function to get public URL for a file
-export function getPublicUrl(path: string): string {
+export function getPublicUrl(path: string, bucket: string = PRODUCT_IMAGES_BUCKET): string {
   const { data } = supabase.storage
-    .from(PRODUCT_IMAGES_BUCKET)
+    .from(bucket)
     .getPublicUrl(path);
 
   return data.publicUrl;

@@ -175,6 +175,17 @@ model CartItem {
   @@unique([userId, variantId])
 }
 
+model QrisImage {
+  id          String   @id @default(cuid())
+  name        String   // Nama QRIS (misal: "QRIS Dana", "QRIS GoPay")
+  description String?  // Deskripsi opsional
+  imageUrl    String   // URL gambar dari Supabase Storage
+  isActive    Boolean  @default(false) // Hanya satu QRIS yang aktif
+  uploadedBy  String   // User ID yang upload
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 model Analytics {
   id          String   @id @default(cuid())
   sessionId   String   // Untuk tracking unique visitors

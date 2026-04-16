@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { unstable_noStore as noStore } from 'next/cache';
 import Header from '@/components/Header';
+import AnalyticsTracker from '@/components/AnalyticsTracker';
 import { UserWithoutPassword } from '@/types/index';
 
 // Disable static optimization for this layout
@@ -41,6 +42,7 @@ export default async function MainLayout({
 
   return (
     <>
+      <AnalyticsTracker />
       <Header currentUser={currentUser} />
       <main className="min-h-screen pt-16 md:pt-20">
         {children}

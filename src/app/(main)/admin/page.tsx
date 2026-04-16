@@ -24,13 +24,15 @@ import {
   Upload,
   Image as ImageIcon,
   Printer,
+  BarChart,
 } from 'lucide-react';
 import { formatDate, formatCurrency } from '@/lib/utils';
 import ReportsTab from './ReportsTab';
 import PrintReceipt from '@/components/PrintReceipt';
 import PrintServiceReceipt from '@/components/PrintServiceReceipt';
+import AnalyticsTab from './AnalyticsTab';
 
-type TabType = 'overview' | 'products' | 'orders' | 'users' | 'services' | 'reports';
+type TabType = 'overview' | 'products' | 'orders' | 'users' | 'services' | 'reports' | 'analytics';
 
 type Stats = {
   totalRevenue: number;
@@ -177,6 +179,7 @@ export default function AdminPage() {
               },
               { id: 'users', label: 'Users', icon: Users, count: null },
               { id: 'reports', label: 'Laporan', icon: FileText, count: null },
+              { id: 'analytics', label: 'Analytics', icon: BarChart, count: null },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -207,6 +210,7 @@ export default function AdminPage() {
           {activeTab === 'services' && <ServicesTab onRefresh={fetchStats} />}
           {activeTab === 'users' && <UsersTab />}
           {activeTab === 'reports' && <ReportsTab />}
+          {activeTab === 'analytics' && <AnalyticsTab />}
         </div>
       </main>
     </>

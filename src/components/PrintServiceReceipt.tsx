@@ -129,6 +129,21 @@ export default function PrintServiceReceipt({ serviceOrder, onClose }: PrintServ
                 font-weight: bold;
                 margin-bottom: 5px;
               }
+              .qris-section {
+                text-align: center;
+                margin: 10px 0;
+              }
+              .qris-label {
+                font-size: 10px;
+                margin-bottom: 5px;
+                font-weight: bold;
+              }
+              .qris-image {
+                width: 150px;
+                height: 150px;
+                object-fit: contain;
+                margin: 0 auto;
+              }
               .validity {
                 font-size: 10px;
               }
@@ -273,6 +288,17 @@ export default function PrintServiceReceipt({ serviceOrder, onClose }: PrintServ
 
         {/* Footer */}
         <div className="footer">
+          <div className="qris-section">
+            <div className="qris-label">SCAN QRIS UNTUK PEMBAYARAN</div>
+            <img
+              src="/qris-dana.jpeg"
+              alt="QRIS Dana"
+              className="qris-image"
+            />
+            <div className="validity" style={{ marginTop: '5px' }}>
+              Scan QRIS di atas untuk pembayaran via Dana
+            </div>
+          </div>
           <div className="thank-you">Terima Kasih</div>
           <div className="validity">Struk ini sebagai bukti pembayaran yang sah</div>
         </div>

@@ -174,3 +174,19 @@ model CartItem {
 
   @@unique([userId, variantId])
 }
+
+model Analytics {
+  id          String   @id @default(cuid())
+  sessionId   String   // Untuk tracking unique visitors
+  pagePath    String   // Halaman yang dikunjungi
+  pageTitle   String?  // Judul halaman (opsional)
+  deviceType  String   @default("desktop") // desktop, mobile, tablet
+  city        String?  // Kota pengunjung (opsional, dari IP)
+  country     String?  // Negara pengunjung (opsional, dari IP)
+  referrer    String?  // Dari mana user datang (opsional)
+  createdAt   DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([pagePath])
+  @@index([createdAt])
+}

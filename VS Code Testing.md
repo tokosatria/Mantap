@@ -23,7 +23,7 @@ npm install @prisma/client
 # jika ada perubahan prisma
 npx prisma generate               :  WAJIB dijalankan setiap kali kamu mengubah file prisma/schema.prisma.
 npx prisma db push                : HATI-HATI! Perintah ini menerapkan perubahan schema ke database. 
-                                    JANGAN pernah jalankan ini jika kamu
+npx prisma studio                                    JANGAN pernah jalankan ini jika kamu
 # perintah Cek 
 npx tsc --noEmit --pretty false   : Ini untuk mengecek error TypeScript. Bagus dijalankan sebelum build.
 npm run lint

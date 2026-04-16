@@ -19,6 +19,14 @@ export async function POST(request: NextRequest) {
                request.headers.get('x-real-ip') ||
                'unknown';
 
+    console.log('[Analytics POST] Tracking page view:', {
+      sessionId,
+      pagePath,
+      pageTitle,
+      deviceType,
+      ip
+    });
+
     // Store analytics data
     await db.analytics.create({
       data: {
@@ -32,9 +40,15 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.log('[Analytics POST] Tracking successful');
     return NextResponse.json({ success: true });
   } catch (error: any) {
-    console.error('Analytics tracking error:', error);
+    console.error('[Analytics POST] Error:', {
+      message: error?.message,
+      code: error?.code,
+      stack: error?.stack,
+      name: error?.name,
+    });
     
     // Check if error is about missing table
     if (error?.code === 'P2021' || error?.message?.includes('does not exist')) {
@@ -44,8 +58,16 @@ export async function POST(request: NextRequest) {
       );
     }
     
+    // Check if error is about connection
+    if (error?.code === 'P1001' || error?.message?.includes('connection') || error?.message?.includes('connect')) {
+      return NextResponse.json(
+        { success: false, error: 'Database connection failed. Check DATABASE_URL environment variable.' },
+        { status: 500 }
+      );
+    }
+    
     return NextResponse.json(
-      { success: false, error: 'Failed to track analytics' },
+      { success: false, error: 'Failed to track analytics', details: error?.message },
       { status: 500 }
     );
   }
@@ -54,6 +76,8 @@ export async function POST(request: NextRequest) {
 // Get analytics data (for admin dashboard)
 export async function GET(request: NextRequest) {
   try {
+    console.log('[Analytics GET] Request received');
+    
     const searchParams = request.nextUrl.searchParams;
     const period = searchParams.get('period') || 'today'; // today, week, month, all
 
@@ -77,7 +101,9 @@ export async function GET(request: NextRequest) {
         startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     }
 
-    // Get all analytics data for the period
+    console.log('[Analytics GET] Fetching analytics for period:', period);
+
+    // Get all analytics data for: period
     const analyticsData = await db.analytics.findMany({
       where: {
         createdAt: {
@@ -88,6 +114,8 @@ export async function GET(request: NextRequest) {
         createdAt: 'desc',
       },
     });
+
+    console.log('[Analytics GET] Found analytics:', analyticsData.length, 'records');
 
     // Calculate metrics
     const pageViews = analyticsData.length;
@@ -101,7 +129,7 @@ export async function GET(request: NextRequest) {
 
     // Page visits breakdown
     const pageVisits = analyticsData.reduce((acc: any, curr) => {
-      acc[curr.pagePath] = (acc[curr.pagePath] || 0) +1;
+      acc[curr.pagePath] = (acc[curr.pagePath] || 0) + 1;
       return acc;
     }, {});
 
@@ -114,7 +142,7 @@ export async function GET(request: NextRequest) {
         return acc;
       }, {});
 
-    return NextResponse.json({
+    const result = {
       success: true,
       data: {
         period,
@@ -125,9 +153,20 @@ export async function GET(request: NextRequest) {
         locationBreakdown,
         recentVisits: analyticsData.slice(0, 50),
       },
+    };
+
+    console.log('[Analytics GET] Sending result:', {
+      pageViews,
+      uniqueVisitors,
     });
+
+    return NextResponse.json(result);
   } catch (error: any) {
-    console.error('Get analytics error:', error);
+    console.error('[Analytics GET] Error:', {
+      message: error?.message,
+      code: error?.code,
+      stack: error?.stack,
+    });
     
     // Check if error is about missing table
     if (error?.code === 'P2021' || error?.message?.includes('does not exist')) {
@@ -138,7 +177,7 @@ export async function GET(request: NextRequest) {
     }
     
     return NextResponse.json(
-      { success: false, error: 'Failed to get analytics' },
+      { success: false, error: 'Failed to get analytics', details: error?.message },
       { status: 500 }
     );
   }

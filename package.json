@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3000 --webpack",
-    "build": "next build --webpack",
+    "build": "prisma generate && next build --webpack",
     "build:standalone": "next build && npm run copy:static",
     "copy:static": "node -e \"const fs = require('fs'); const path = require('path'); [ ['.next/static', '.next/standalone/.next/static'], ['public', '.next/standalone/public'] ].forEach(([src, dest]) => { fs.mkdirSync(path.dirname(dest), { recursive: true }); fs.cpSync(src, dest, { recursive: true }); });\"",
     "start": "NODE_ENV=production bun .next/standalone/server.js 2>&1 | tee server.log",

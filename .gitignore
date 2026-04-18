@@ -1,103 +1,80 @@
-# =================================================================
-# CRITICAL SECURITY - SENSITIVE FILES
-# =================================================================
-
-# Environment Variables - NEVER COMMIT THESE!
+# Environment variables
 .env
 .env*.local
 .env.development.local
 .env.test.local
 .env.production.local
-*.env
 
-# Database Files - NEVER COMMIT USER DATA!
-*.db
-*.sqlite
-*.sqlite3
-prisma/*.db
-db/*.db
-database/*.db
-
-# Supabase/Auth Config
-supabase/.temp/supabase-admin*.key
-.supabase
-
-# =================================================================
-# DEPENDENCIES
-# =================================================================
+# Dependencies
 node_modules/
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
-
-# Mini services dependencies
-mini-services/*/node_modules/
-
-# =================================================================
-# NEXT.JS BUILD & CACHE
-# =================================================================
-.next/
-out/
-build/
-.next-cache/
-.turbo/
-.swc/
-
-# =================================================================
-# TESTING & COVERAGE
-# =================================================================
-/coverage
-.nyc_output
-*.lcov
-test-results/
-
-# =================================================================
-# LOGS
-# =================================================================
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
 lerna-debug.log*
-server.log
-dev.log
-dev.out.log
 
-# =================================================================
-# IDE & EDITOR CONFIG
-# =================================================================
+# Next.js
+.next/
+out/
+.next-server/
+next-env.d.ts
+build/
+dist/
+.turbo/
+
+# Vercel
+.vercel/
+
+# Production build files
+*.log
+logs/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+.DS_Store
+*.pem
+Thumbs.db
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env
+.env*.local
+.env.development
+.env.test
+.env.production
+
+# Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-!.vscode/settings.json
-.idea/
-*.swp
-*.swo
-*~
+.idea
 .DS_Store
-Thumbs.db
-*.sublime-project
-*.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# =================================================================
-# TEMPORARY FILES
-# =================================================================
-*.tmp
-*.temp
-.cache/
-tmp/
-temp/
-*.pid
-*.seed
-*.pid.lock
+# PWA files
+public/sw.js
+public/workbox-*.js
+public/worker-*.js
+public/sw.js.map
+public/workbox-*.js.map
+public/worker-*.js.map
 
-# =================================================================
-# OS GENERATED FILES
-# =================================================================
+# Prisma (for development SQLite)
+prisma/dev.db
+prisma/dev.db-journal
+prisma/migrations/**/migration.sql
+
+# OS files
 .DS_Store
 .DS_Store?
 ._*
@@ -105,53 +82,142 @@ temp/
 .Trashes
 ehthumbs.db
 Thumbs.db
-desktop.ini
+.desktop.ini
 
-# =================================================================
-# MISC & CONFIG
-# =================================================================
-*.pem
-.vercel
-.now
-.claude
-.z-ai-config
-local-*
-
-# TypeScript
-*.tsbuildinfo
-next-env.d.ts
-
-# =================================================================
-# PROJECT SPECIFIC
-# =================================================================
-# Skills directory
-/skills/
-
-# Test directories
-test/
-prompt/
-
-# Agent context (contains work logs)
-/agent-ctx/
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
 
 # Backup files
 *.bak
 *.backup
 *.old
+*~
 
-# =================================================================
-# OPTIONAL - Uncomment if needed
-# =================================================================
-# If using Firebase
-# firebase-debug.log*
-# firestore-debug.log*
-# ui-debug.log*
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
 
-# If using AWS
-# .aws-sam/
+# Lock files (optional - uncomment if you don't want to commit lock files)
+# package-lock.json
+# pnpm-lock.yaml
+# yarn.lock
 
-# If using Docker (uncomment if you want to ignore docker-compose.override.yml)
-# docker-compose.override.yml
+# PWA & Build artifacts
+.pwa-cache/
+*.buildinfo
 
-# If you want to ignore all local overrides
-# *.local
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+jspm_packages/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+out
+build
+dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Supabase (keep local dev data out of git)
+.supabase/
+
+# Database files - NEVER commit database files!
+db/
+*.db
+*.db-shm
+*.db-wal
+prisma/*.db
+prisma/*.db-journal
+
+# Workspace and development files
+dev.log
+worklog.md
+FILES-CREATED.md
+WORKSPACE-STATUS.txt
+create-project-structure.*
+
+# Upload scripts and data (may contain credentials)
+upload/
+
+# Backup files (keep local only)
+backup-project/
+
+# Private keys and certificates
+*.key
+*.pem
+*.crt
+*.p12
